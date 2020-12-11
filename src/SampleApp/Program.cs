@@ -3,37 +3,36 @@ using FluentAssertions;
 internal class Solution
 {
     // Complete the minimumBribes function below.
-    private static int minimumBribes(int[] q)
+    private static int minimumBribes(int[] A)
     {
-        int sum = 0;
-        for (int i = 0; i < q.Length; i++)
+        int n = A.Length;
+        int cnt = 0;
+        for (int i = n - 1; i >= 0; i--)
         {
-            var num = i + 1;
-
-            if (q[i] > num + 2)
-                return -1;
-
-            else if (q[i] > num)
+            if (A[i] != (i + 1))
             {
-                sum += q[i] - num;
-            }
-            else
-            {
-                if (i + 1 < q.Length)
+                if (((i - 1) >= 0) && A[i - 1] == (i + 1))
                 {
-                    if (q[i] > q[i + 1])
-                        sum++;
+                    cnt++;
+
+                    var x = A[i - 1];
+                    A[i - 1] = A[i];
+                    A[i] = x;
                 }
-
-                if (i + 2 < q.Length)
+                else if (((i - 2) >= 0) && A[i - 2] == (i + 1))
                 {
-                    if (q[i] > q[i + 2])
-                        sum++;
+                    cnt += 2;
+                    A[i - 2] = A[i - 1];
+                    A[i - 1] = A[i];
+                    A[i] = i + 1;
+                }
+                else
+                {
+                    return -1;
                 }
             }
         }
-
-        return sum;
+        return cnt;
     }
 
     private static void Main(string[] args)
